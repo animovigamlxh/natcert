@@ -100,11 +100,16 @@ export CF_Email="$cf_email"
 
 # 6. 申请证书
 
-# 修改第 6 步的申请命令
-echo -e "${GREEN}[3/5] 正在尝试更新/申请证书...${PLAIN}"
+echo -e "${GREEN}[3/5] 开始申请证书...${PLAIN}"
 
-# 使用 --renew 和 --force 结合
-~/.acme.sh/acme.sh --renew -d "$domain" --dns dns_cf --force
+# 尝试首次申请
+~/.acme.sh/acme.sh --issue --dns dns_cf -d "$domain"
+
+# 如果上面失败了（可能是因为本地已有残留配置），则尝试强制申请
+if [ $? -ne 0 ]; then
+    echo -e "${YELLOW}检测到常规申请失败，正在尝试强制(Force)模式...${PLAIN}"
+    ~/.acme.sh/acme.sh --issue --dns dns_cf -d "$domain" --force
+fi
 
 
 
