@@ -100,9 +100,11 @@ export CF_Email="$cf_email"
 
 # 6. 申请证书
 
-echo -e "${GREEN}[3/5] 开始通过 DNS API 申请证书，请耐心等待 (约 1-2 分钟)...${PLAIN}"
+# 修改第 6 步的申请命令
+echo -e "${GREEN}[3/5] 正在尝试更新/申请证书...${PLAIN}"
 
-~/.acme.sh/acme.sh --issue --dns dns_cf -d "$domain"
+# 使用 --renew 和 --force 结合
+~/.acme.sh/acme.sh --renew -d "$domain" --dns dns_cf --force
 
 
 
